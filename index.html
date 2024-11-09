@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda Telefónica Básica</title>
+  <link rel="stylesheet" href="./Css/Css.css">
+  <script src="./Js/vue3.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>Agenda Telefónica</h1>
+
+        <div>
+            <h2>Añadir Contacto</h2>
+            <form @submit.prevent="agregarContacto">
+                <label>Nombre:</label>
+                <input type="text" v-model="nuevoContacto.nombre">
+                
+                <label>Teléfono:</label>
+                <input type="number" v-model="nuevoContacto.telefono">
+
+                <label>Categoría:</label>
+                <select v-model="nuevoContacto.categoria">
+                    <option v-for="cat in categorias">{{ cat }}</option>
+                </select>
+                
+                <button type="submit">Añadir</button>
+            </form>
+        </div>
+
+        <div>
+            <h2>Contactos</h2>
+            <table>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Categoría</th>
+                    <th>Mensajes</th>
+                    <th>Llamadas</th>
+                    <th>Acción</th>
+                </tr>
+                <tr v-for="(contacto, index) in contactos">
+                    <td>{{ contacto.nombre }}</td>
+                    <td>{{ contacto.telefono }}</td>
+                    <td>{{ contacto.categoria }}</td>
+                    <td>
+                        <button @click="contacto.mensajes = contacto.mensajes - 1" :disabled="contacto.mensajes <= 0">-</button>
+                        {{ contacto.mensajes }}
+                        <button @click="contacto.mensajes = contacto.mensajes + 1" :disabled="contacto.mensajes >= 25">+</button>
+                    </td>
+                    <td>
+                        <button @click="contacto.llamadas = contacto.llamadas - 1" :disabled="contacto.llamadas <= 0">-</button>
+                        {{ contacto.llamadas }}
+                        <button @click="contacto.llamadas = contacto.llamadas + 1" :disabled="contacto.llamadas >= 15">+</button>
+                    </td>
+                    <td><button @click="eliminarContacto(index)">Eliminar</button></td>
+                </tr>
+                <tr class="totales">
+                    <td colspan="3"><strong>Totales</strong></td>
+                    <td>Total Mensajes: {{ calcularTotal('mensajes') }}</td>
+                    <td>Total Llamadas: {{ calcularTotal('llamadas') }}</td>
+                    <td>Total Contactos: {{ contactos.length }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script src="./Js/script.js"></script>
+</body>
+</html>
